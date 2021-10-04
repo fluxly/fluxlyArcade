@@ -1,0 +1,69 @@
+<html>
+<head>
+<link rel="stylesheet" href="fonts/silkscreen.css">
+  	<title>FluxlyArcade</title>
+    <style>
+		@font-face{ 
+		    font-family: "Silkscreen";
+		    src:url("fonts/slkscr.ttf"); /*For other browsers*/  
+		}
+		body {
+			padding:0px;
+			margin:0px;
+			background:#000000;
+			font-family:"Silkscreen";
+		}
+		a {
+			cursor:pointer;
+			text-decoration:none;
+			font-size:24pt;
+			color:#ffffff;
+		}
+		.buttons:hover {
+            cursor: pointer;
+			transform:scale(90%, 90%);
+		}
+		#pagewrapper {
+			position:fixed;
+			top:50%;
+			left:50%;
+			transform:translate(-50%, -50%);
+			width:931px;
+			height:700px;
+			min-width:931px;
+			min-height:700px;
+			max-width:931px;
+			max-height:700px;
+			border:0px solid black;
+			overflow:hidden;
+		}
+		#opening-link {
+			position:fixed;
+			top:50%;
+			left:50%;
+			transform:translate(-50%, -50%);
+		}
+	</style>
+	<script>
+		function loadTitle() {
+			console.log("Load Title");
+			document.getElementById("opening-link").style["display"] = "none";
+			document.getElementById("pagewrapper").src = "title.html";
+			
+		}
+		function loadGame() {
+			console.log("Load Game");
+			document.getElementById("pagewrapper").src = "game.html";
+		}
+	</script>
+</head>
+<body>
+	
+	<iframe id="pagewrapper" style="overflow:hidden" src="title.html" scrolling="no"></iframe>
+	
+	
+</body>
+<script>
+	document.getElementById("pagewrapper").click();
+</script>
+</html>

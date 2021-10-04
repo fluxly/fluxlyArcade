@@ -1,0 +1,391 @@
+<html>
+<head>
+	
+  	<title>Fluxly</title>
+<link rel="stylesheet" href="fonts/silkscreen.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <script language="javascript" type="text/javascript" src="p5.min.js"></script>
+    <script language="javascript" type="text/javascript" src="p5.dom.min.js"></script>
+    <script language="javascript" type="text/javascript" src="Box2d.min.js"></script>
+    <script language="javascript" type="text/javascript" src="scene.js"></script>
+	<script language="javascript" type="text/javascript" src="howler.core.js"></script>
+	<script language="javascript" type="text/javascript" src="fluxly.js"></script>
+	
+    <link rel="stylesheet" href="styles.css">
+	
+	<style>
+		@font-face{ 
+		    font-family: "Silkscreen";
+		    src:url("fonts/slkscr.ttf"); /*For other browsers*/  
+		}
+		html {  
+			cursor: pointer;
+			-webkit-touch-callout: none; /* iOS Safari */
+			-webkit-user-select: none; /* Safari */
+			 user-select: none; 
+			 -webkit-tap-highlight-color: rgba(0,0,0,0);
+		}
+		body {
+			cursor: pointer;
+		}
+		
+		a {
+			cursor: pointer;
+			text-decoration:none;
+			color:#ffffff;
+		}
+		.buttons:hover {
+            cursor: pointer;
+			transform:scale(90%, 90%);
+		}
+		body {
+			font-family:"Silkscreen";
+		
+		}
+		#shemp {
+			font-size:14pt;
+			color:#aaaaaa;
+			display:none;
+			position:fixed;
+			top:5px;
+			left:50%;
+			transform:translate(-50%, 0%);
+			z-index:10000;
+		}
+		.fade-in {
+			-webkit-animation: fade-in 3s cubic-bezier(0.390, 0.575, 0.565, 1.000) both;
+			        animation: fade-in 3s cubic-bezier(0.390, 0.575, 0.565, 1.000) both;
+		}
+		@-webkit-keyframes fade-in {
+		  100% {
+		    opacity: 0;
+		  }
+		  0% {
+		    opacity: 1;
+		  }
+		}
+		@keyframes fade-in {
+		  100% {
+		    opacity: 0;
+		  }
+		  0% {
+		    opacity: 1;
+		  }
+		}
+		.blink {
+		  -webkit-animation: 1.5s linear infinite condemned_blink_effect; /* for Safari 4.0 - 8.0 */
+		  animation: 1.5s linear infinite condemned_blink_effect;
+		}
+		@-webkit-keyframes condemned_blink_effect {
+		  0% {
+		    visibility: visible;
+		  }
+		  50% {
+		    visibility: hidden;
+		  }
+		  100% {
+		    visibility: hidden;
+		  }
+		}
+
+		@keyframes condemned_blink_effect {
+		  0% {
+		    visibility: visible;
+		  }
+		  50% {
+		    visibility: hidden;
+		  }
+		  100% {
+		    visibility: hidden;
+		  }
+		}
+		
+		.wobble-hor-bottom {
+			-webkit-animation: wobble-hor-bottom 0.8s both;
+			        animation: wobble-hor-bottom 0.8s both;
+		}
+		
+		@-webkit-keyframes wobble-hor-bottom {
+		  0%,
+		  100% {
+		    -webkit-transform: translateX(0%);
+		            transform: translateX(0%);
+		    -webkit-transform-origin: 50% 50%;
+		            transform-origin: 50% 50%;
+		  }
+		  15% {
+		    -webkit-transform: translateX(-30px) rotate(-6deg);
+		            transform: translateX(-30px) rotate(-6deg);
+		  }
+		  30% {
+		    -webkit-transform: translateX(15px) rotate(6deg);
+		            transform: translateX(15px) rotate(6deg);
+		  }
+		  45% {
+		    -webkit-transform: translateX(-15px) rotate(-3.6deg);
+		            transform: translateX(-15px) rotate(-3.6deg);
+		  }
+		  60% {
+		    -webkit-transform: translateX(9px) rotate(2.4deg);
+		            transform: translateX(9px) rotate(2.4deg);
+		  }
+		  75% {
+		    -webkit-transform: translateX(-6px) rotate(-1.2deg);
+		            transform: translateX(-6px) rotate(-1.2deg);
+		  }
+		}
+		@keyframes wobble-hor-bottom {
+		  0%,
+		  100% {
+		    -webkit-transform: translateX(0%);
+		            transform: translateX(0%);
+		    -webkit-transform-origin: 50% 50%;
+		            transform-origin: 50% 50%;
+		  }
+		  15% {
+		    -webkit-transform: translateX(-30px) rotate(-6deg);
+		            transform: translateX(-30px) rotate(-6deg);
+		  }
+		  30% {
+		    -webkit-transform: translateX(15px) rotate(6deg);
+		            transform: translateX(15px) rotate(6deg);
+		  }
+		  45% {
+		    -webkit-transform: translateX(-15px) rotate(-3.6deg);
+		            transform: translateX(-15px) rotate(-3.6deg);
+		  }
+		  60% {
+		    -webkit-transform: translateX(9px) rotate(2.4deg);
+		            transform: translateX(9px) rotate(2.4deg);
+		  }
+		  75% {
+		    -webkit-transform: translateX(-6px) rotate(-1.2deg);
+		            transform: translateX(-6px) rotate(-1.2deg);
+		  }
+		}
+		.score-label {
+			background-color:#333333;
+			color:#ffffff;
+			text-align:center;
+			width:60px;
+			height:60px;
+			font-size:24pt;
+			border-radius:18px;
+			float:left;
+			margin-left:4px;
+		}
+		#score-labels {
+			padding-left:100px;
+			position:fixed;
+			bottom:-20px;
+			left:50%;
+			transform:translate(-50%, 0%);
+			margin:0px auto 0px auto;
+			width:1024px;
+		}
+		#menu-items {
+			font-size:14pt;
+			text-align:center;
+			position:fixed;
+			left:50%;
+			top:580px;
+			transform:translate(256px, 0px);
+			color:#ffffff;
+			z-index:10000;
+		}
+		#title-scene {
+			position:fixed;
+			top:0px;
+			left:0px;
+			width:100%;
+			height:100%;
+			background-color:#000000;
+			color:#ffffff;
+		}
+		/* Sprites */
+		.sprites {
+		    background: #a30101;
+		    background: -moz-linear-gradient(-45deg, #111111 0%, #999999 100%);
+		    background: -webkit-linear-gradient(-45deg, #111111 0%, #999999 100%);
+		    background: linear-gradient(135deg, #111111 0%, #999999 100%);
+		  position: absolute;
+		 /* border-top:20px solid #22e17d;*/
+		 position:absolute;
+		 top:-10px;
+		  width: 110%;
+		  height: 20px;
+          transform:rotate(90);
+		}
+		.progress {
+		  position: absolute;
+		  top: 0;
+		  left: 0;
+		  height: 100%;
+		  background-color: rgba(0, 0, 0, 0.5);
+		  width: 0;
+		}
+		.sprite {
+		  position: absolute;
+		  top: 0;
+		  background-color: rgba(0, 0, 0, 0.1);
+		  border: 3px solid rgba(0, 0, 0, 0.4);
+		  height: 100%;
+		  width: 0;
+		}
+		.sprite:hover {
+		  background-color: rgba(0, 0, 0, 0.2);
+		  cursor: pointer;
+		}
+		#sprite0 {
+		  left: 0;
+		}
+		#sprite1 {
+		  left: 0;
+		}
+		#sprite2 {
+		  left: 0;
+		}
+		#sprite3 {
+		  left: 0;
+		}
+		#sprite4 {
+		  left: 0;
+		}
+		#sprite5 {
+		  right: 0;
+		}
+		.sprite-label {
+		  font-size: 1.5em;
+		  opacity: 0.8;
+		  font-weight: 300;
+		  color: #fff;
+		  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.33);
+		  position: absolute;
+		  bottom: -33px;
+		  left: 0;
+		}
+
+		@media screen and (max-height: 480px), screen and (max-width: 670px) {
+		  body {
+		    font-size: 75%;
+		  }
+		}
+		</style>
+	<script>
+		var mode = "nonshemp";
+		
+		function indexSetup() {
+			setupTestControls();
+			loadSounds();
+			startBackground();
+		}
+		
+		function shempMode() {
+			if (mode == "shemp") {
+				mode = "nonshemp";
+				document.getElementById("shemp").style["display"] = "none";
+			} else {
+				mode = "shemp";
+				document.getElementById("shemp").style["display"] = "block";
+				
+			}
+		}
+		function triggerScoreIcon(n) {
+			console.log("TRIGGER " + n);
+			document.getElementById("score-label-" + n).style["background-color"] = "#ffffff";
+			document.getElementById("score-label-" + n).style["color"] = "#000000";
+			document.getElementById("score-label-" + n).classList.add("wobble-hor-bottom");
+			setTimeout(function() {
+				console.log("End " + n);
+				document.getElementById("score-label-" + n).style["background-color"] = "#333333";
+				document.getElementById("score-label-" + n).style["color"] = "#ffffff";
+				document.getElementById("score-label-" + n).classList.remove("wobble-hor-bottom");
+			}, 900);
+		}
+		
+	
+	</script>
+</head>
+<body onload="indexSetup()">
+	<div id="scene-wrapper"></div>
+	<div id="controls-wrapper" style="display:none;">
+		<div id="sound-controls"></div>
+    </div>
+	
+	<div id="shemp" class="blink">SHEMP MODE</div>
+	<div id="score-labels">
+	<div id="score-label-1" class="score-label" >+1</div>
+	<div id="score-label-2" class="score-label" >+2</div>
+	<div id="score-label-3" class="score-label" >+3</div>
+	<div id="score-label-4" class="score-label" >+4</div>
+	<div id="score-label-5" class="score-label" >+5</div>
+	<div id="score-label-6" style="background-color:#ffffff;" class="score-label" ></div>
+	<div id="score-label-7" class="score-label" >+5</div>
+	<div id="score-label-8" class="score-label" >+4</div>
+	<div id="score-label-9" class="score-label" >+3</div>
+	<div id="score-label-10" class="score-label" >+2</div>
+	<div id="score-label-11" class="score-label" >+1</div>
+	</div>
+	<div id="menu-items">
+		<a href="javascript:tilt()"><div class="buttons" style="width:180px;margin-bottom:8px;background-color:#ffffff; padding:10px;border-radius:12px;color:#000000;">TILT</div></a>
+	    <a href="javascript:shempMode()"><div class="buttons" style="width:180px;background-color:#ffffff; padding:8px;border-radius:12px;color:#000000;">SHEMP MODE</div></a><br/>
+	</div>
+
+	
+    <!-- Cello Keyboard -->
+    <div id="movable-keyboard">
+  	  <div class="sprites">
+  		<div id="sprite0" class="sprite">
+  	    </div>
+  	    <div id="sprite1" class="sprite">
+  	    </div>
+  	    <div id="sprite2" class="sprite">
+  	    </div>
+  	    <div id="sprite3" class="sprite">
+  	    </div>
+  	    <div id="sprite4" class="sprite">
+  	    </div>
+  	    <div id="sprite5" class="sprite">
+  	    </div>
+  	    <div id="sprite6" class="sprite">
+  	    </div>
+  	  </div>
+    </div>
+	
+</body>
+ <script src="./sprite.js"></script>
+<script>
+	var backgroundSound = new Howl({
+        src: ['./mp3/background-louder.mp3'], loop: true
+      });
+	  
+	var timer1;
+    var timer2;
+	var timer3;
+    var timer4;
+	var timer5;
+    var timer6;
+	var timer7;
+   
+	function startBackground() {
+		console.log("start sound");
+		backgroundSound.play();
+		sprite.play("sprite0");
+		sprite.play("sprite1");
+		sprite.play("sprite2");
+		sprite_2.play("sprite3");
+		sprite_2.play("sprite4");
+		sprite_2.play("sprite5");
+		sprite_2.play("sprite6");
+	    timer1 = setInterval(function sprite1Timer() { sprite.play("sprite0"); }, 8000);
+	    timer2 = setInterval(function sprite2Timer() { sprite.play("sprite1"); }, 8600);
+		timer3 = setInterval(function sprite3Timer() { sprite.play("sprite2"); }, 8200);
+	    timer4 = setInterval(function sprite4Timer() { sprite_2.play("sprite3"); }, 8500);
+		timer5 = setInterval(function sprite5Timer() { sprite_2.play("sprite4"); }, 8400);
+	    timer6 = setInterval(function sprite6Timer() { sprite_2.play("sprite5"); }, 8300);
+		timer7 = setInterval(function sprite7Timer() { sprite_2.play("sprite6"); }, 8100);
+	}
+  </script>
+
+</html>

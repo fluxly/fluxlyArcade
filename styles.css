@@ -1,0 +1,41 @@
+#container {
+	display:none;
+}
+#menu {
+	display:block;
+}
+html {
+	background:#000000;
+	padding:0px;
+	
+}
+body {
+	padding:0px;
+	margin:0px;
+}
+#scene-wrapper {
+	position:fixed;
+	left:50%;
+	top:50%;
+	transform:translate(-50%, -50%);
+}
+.control {
+	display:none;
+	position:relative;
+	background-color:green;
+}
+.slidecontainer {
+	width:200px;
+	clear:both;
+}
+.slide-container input {
+	display:block;
+	width:100%;
+}
+.slider-value {
+	float:right;
+	display:inline;
+}
+#drom-image {
+  float:right;
+} 
